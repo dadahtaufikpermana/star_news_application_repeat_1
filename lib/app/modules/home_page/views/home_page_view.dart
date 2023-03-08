@@ -7,7 +7,7 @@ import '../../../routes/app_pages.dart';
 import '../controllers/home_page_controller.dart';
 
 class HomePageView extends GetView<HomePageController> {
-  const HomePageView({Key? key}) : super(key: key);
+  final HomePageController homeController = Get.put(HomePageController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,38 +25,20 @@ class HomePageView extends GetView<HomePageController> {
         ),
         title: Text('Star News', style: TextStyle(color: Colors.black)),
       ),
-      body: SingleChildScrollView(
+      body: Obx(() => SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 40),
-            BuildListTileWidget(
-              id: "satu",
-              title: "asdaf",
-              description: "sdfgds",
-            ),
-            BuildListTileWidget(
-              id: "dua",
-              title: "rhtr",
-              description: "werw",
-            ),
-            BuildListTileWidget(
-              id: "tiga",
-              title: "afdsadsad",
-              description: "yjmyu",
-            ),
-            BuildListTileWidget(
-              id: "tiga",
-              title: "afdsadsad",
-              description: "yjmyu",
-            ),
-            BuildListTileWidget(
-              id: "tiga",
-              title: "afdsadsad",
-              description: "yjmyu",
-            ),
+            ...controller.listNews.reversed.map(
+                  (element) => BuildListTileWidget(
+                title: element.title,
+                description: element.body,
+                id: element.id.toString(),
+              ),
+            )
           ],
         ),
-      ),
+      ),),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed(Routes.CREATE_NEWS),
         backgroundColor: Colors.indigo,
